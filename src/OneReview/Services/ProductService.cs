@@ -1,20 +1,20 @@
 using OneReview.Domain;
+using OneReview.Persistence.Database.Repositories;
 
 namespace OneReview.Services;
 
-public class ProductService
+public class ProductService(ProductsRepository productsRepository)
 {
-    private static readonly List<Product> ProductRepository = [];
+    private readonly ProductsRepository _productsRepository = productsRepository;
 
-    public void Create(Product product)
+    public async Task CreateAsync(Product product)
     {
-        ProductRepository.Add(product);
+        await _productsRepository.CreateAsync(product);
     }
 
-    public Product? Get(Guid productId)
+    public async Task<Product?> GetAsync(Guid productId)
     {
-        // create product in database
-        return ProductRepository.Find(p => p.Id == productId);
+        return await _productsRepository.GetByIdAsync(productId);
     }
 
 }

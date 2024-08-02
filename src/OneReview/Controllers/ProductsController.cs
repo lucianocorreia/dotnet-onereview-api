@@ -15,12 +15,12 @@ public class ProductsController(ProductService productService) : ControllerBase
     private readonly ProductService _productService = productService;
 
     [HttpPost]
-    public IActionResult Create(CreateProductRequest request)
+    public async Task<IActionResult> Create(CreateProductRequest request)
     {
         var product = request.ToDomain();
 
         // create product in database
-        _productService.Create(product);
+        await _productService.CreateAsync(product);
 
         return CreatedAtAction(
             actionName: nameof(Get),
@@ -32,9 +32,9 @@ public class ProductsController(ProductService productService) : ControllerBase
     }
 
     [HttpGet("{productId:guid}")]
-    public IActionResult Get(Guid productId)
+    public async Task<IActionResult> Get(Guid productId)
     {
-        var product = _productService.Get(productId);
+        var product = await _productService.GetAsync(productId);
 
         return product is null
             ? Problem(statusCode: StatusCodes.Status404NotFound, title: "Product not found", detail: $"Product with id {productId} was not found.")

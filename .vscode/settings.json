@@ -7,5 +7,17 @@
         "dev": {
             "host": "http://localhost:5256"
         }
-    }
+    },
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 5432,
+            "driver": "PostgreSQL",
+            "name": "localhost",
+            "database": "onerevew",
+            "username": "postgres",
+            "password": "postgres"
+        }
+    ]
 }
