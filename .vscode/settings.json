@@ -1,0 +1,11 @@
+{
+    "rest-client.environmentVariables": {
+        "$shared": {},
+        "docker": {
+            "host": "http://localhost:5001"
+        },
+        "dev": {
+            "host": "http://localhost:5256"
+        }
+    }
+}

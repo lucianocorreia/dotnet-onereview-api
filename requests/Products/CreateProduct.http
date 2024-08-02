@@ -1,0 +1,13 @@
+# @name create
+POST {{host}}/products
+Content-Type: application/json
+
+{
+  "Name": "Product 1",
+  "Category": "Category 1",
+  "SubCategory": "SubCategory 1"
+}
+
+
+### Get based on location header
+GET {{create.response.headers.Location}}
