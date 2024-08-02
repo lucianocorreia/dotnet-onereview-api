@@ -20,6 +20,7 @@ public static class DependencyInjectionExtensions
     {
         services.AddScoped<IDbConnectionFactory>(_ => new NpgsqlConnectionFactory(configuration[DBConstants.DefaultConnectionStringPath]!));
         services.AddScoped<ProductsRepository>();
+        services.AddScoped<ReviewsRepository>();
 
         return services;
     }

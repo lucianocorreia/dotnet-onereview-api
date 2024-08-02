@@ -12,12 +12,12 @@ public class ReviewController(ReviewService reviewService) : ControllerBase
     private readonly ReviewService _reviewService = reviewService;
 
     [HttpPost]
-    public IActionResult Create(CreateReviewRequest request)
+    public async Task<IActionResult> Create(CreateReviewRequest request)
     {
         var review = request.ToDomain();
 
         // create review in database
-        _reviewService.Create(review);
+        await _reviewService.Create(review);
 
         return CreatedAtAction(
             actionName: nameof(Get),
@@ -30,9 +30,9 @@ public class ReviewController(ReviewService reviewService) : ControllerBase
     }
 
     [HttpGet("{productId:guid}/reviews/{reviewId:guid}")]
-    public IActionResult Get(Guid productId, Guid reviewId)
+    public async Task<IActionResult> Get(Guid productId, Guid reviewId)
     {
-        var review = _reviewService.Get(reviewId, productId);
+        var review = await _reviewService.Get(reviewId, productId);
 
         return review is null
             ? Problem(statusCode: StatusCodes.Status404NotFound, title: "Review not found", detail: $"Review with id {reviewId} for product with id {productId} was not found.")

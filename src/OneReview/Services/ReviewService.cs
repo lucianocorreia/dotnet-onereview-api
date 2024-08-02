@@ -1,18 +1,19 @@
 using OneReview.Domain;
+using OneReview.Persistence.Database.Repositories;
 
 namespace OneReview.Services;
 
-public class ReviewService
+public class ReviewService(ReviewsRepository reviewsRepository)
 {
-    private static readonly List<Review> ReviewRepository = [];
+    private readonly ReviewsRepository _reviewsRepository = reviewsRepository;
 
-    public void Create(Review review)
+    public async Task Create(Review review)
     {
-        ReviewRepository.Add(review);
+        await _reviewsRepository.CreateAsync(review);
     }
 
-    public Review? Get(Guid reviewId, Guid productId)
+    public async Task<Review?> Get(Guid reviewId, Guid productId)
     {
-        return ReviewRepository.Find(r => r.Id == reviewId && r.ProductId == productId);
+        return await _reviewsRepository.GetByIdAsync(reviewId, productId);
     }
 }
