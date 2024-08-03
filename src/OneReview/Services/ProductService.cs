@@ -1,4 +1,5 @@
 using OneReview.Domain;
+using OneReview.Errors;
 using OneReview.Persistence.Database.Repositories;
 
 namespace OneReview.Services;
@@ -9,6 +10,8 @@ public class ProductService(ProductsRepository productsRepository)
 
     public async Task CreateAsync(Product product)
     {
+        throw new NotFoundException("Product not found");
+
         await _productsRepository.CreateAsync(product);
     }
 

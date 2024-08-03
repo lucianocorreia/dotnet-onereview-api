@@ -23,12 +23,23 @@ public class ProductsRepository(IDbConnectionFactory dbConnectionFactory)
         result.Throw().IfNegativeOrZero();
     }
 
-    internal async Task<Product?> GetByIdAsync(Guid productId)
+    public async Task<Product?> GetByIdAsync(Guid productId)
     {
         using IDbConnection connection = await _dbConnectionFactory.CreateConnectionAsync();
 
         string query = "SELECT id, name, category, subcategory FROM products WHERE id = @Id";
 
         return await connection.QueryFirstAsync<Product>(query, new { Id = productId });
+    }
+
+    public async Task<bool> ExistsAsync(Guid productId)
+    {
+        using IDbConnection connection = await _dbConnectionFactory.CreateConnectionAsync();
+
+        string query = "SELECT COUNT(*) FROM products WHERE id = @Id";
+
+        var result = await connection.ExecuteScalarAsync<int>(query, new { id = productId });
+
+        return result > 0;
     }
 }

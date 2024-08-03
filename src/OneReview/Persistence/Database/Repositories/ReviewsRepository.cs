@@ -23,7 +23,7 @@ public class ReviewsRepository(IDbConnectionFactory dbConnectionFactory)
         result.Throw().IfNegativeOrZero();
     }
 
-    internal async Task<Review?> GetByIdAsync(Guid reviewId, Guid productId)
+    public async Task<Review?> GetByIdAsync(Guid reviewId, Guid productId)
     {
         using IDbConnection connection = await _dbConnectionFactory.CreateConnectionAsync();
 
@@ -31,4 +31,16 @@ public class ReviewsRepository(IDbConnectionFactory dbConnectionFactory)
 
         return await connection.QueryFirstAsync<Review>(query, new { Id = reviewId, productId = productId });
     }
+
+    public async Task<bool> ExistsAsync(Guid productId)
+    {
+        using IDbConnection connection = await _dbConnectionFactory.CreateConnectionAsync();
+
+        string query = "SELECT COUNT(*) FROM reviews WHERE productid = @ProductId";
+
+        var result = await connection.ExecuteScalarAsync<int>(query, new { productid = productId });
+
+        return result > 0;
+    }
+
 }
